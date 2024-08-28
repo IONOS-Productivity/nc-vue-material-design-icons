@@ -4,12 +4,14 @@
 import { mkdir, writeFile } from 'fs/promises';
 import path from 'path';
 import pMap from 'p-map';
-import * as icons from '@mdi/js/commonjs/mdi.js';
+import iconsMapper from './iconsMapper';
 import { existsSync } from 'fs';
 
+const icons = iconsMapper.getIcons();
+const viewBoxes = iconsMapper.getViewBoxes();
 const dist = path.resolve(__dirname, 'dist');
 
-function renderTemplate(title: string, svgPathData: string, name: string) {
+function renderTemplate(title: string, svgPathData: string, name: string, viewBox: object) {
   return `<template>
   <span v-bind="$attrs"
         :aria-hidden="title ? null : true"
@@ -21,7 +23,7 @@ function renderTemplate(title: string, svgPathData: string, name: string) {
          class="material-design-icon__svg"
          :width="size"
          :height="size"
-         viewBox="0 0 24 24">
+         viewBox="0 0 ${viewBox.width} ${viewBox.height}">
       <path d="${svgPathData}">
         <title v-if="title">{{ title }}</title>
       </path>
@@ -63,6 +65,7 @@ function getTemplateData(id: string) {
     name,
     title,
     svgPathData: icons[id],
+    viewBox: viewBoxes[id]
   };
 }
 
@@ -78,8 +81,8 @@ async function build() {
   // Batch process promises to avoid overloading memory
   await pMap(
     templateData,
-    async ({ name, title, svgPathData }) => {
-      const component = renderTemplate(title, svgPathData, name);
+    async ({ name, title, svgPathData, viewBox }) => {
+      const component = renderTemplate(title, svgPathData, name, viewBox);
       const filename = `${name}.vue`;
 
       return writeFile(path.resolve(dist, filename), component);
