@@ -50,6 +50,7 @@
   "scripts": {
     "prebuild": "rm -rf dist/",
     "build": "./build.ts",
+    "contactsheet": "./contactsheet.ts",
     "postbuild": "cp styles.css package.json README.md dist/",
     "format": "prettier --write **/*.{js,vue}",
     "test": "jest"
