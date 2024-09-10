@@ -4,9 +4,10 @@
 import { mkdir, writeFile } from 'fs/promises';
 import path from 'path';
 import pMap from 'p-map';
-import * as icons from '@mdi/js/commonjs/mdi.js';
+import iconsMapper from './iconsMapper';
 import { existsSync } from 'fs';
 
+const { icons } = iconsMapper.getIcons();
 const dist = path.resolve(__dirname, 'dist');
 
 function renderTemplate(title: string, svgPathData: string, name: string) {
@@ -62,7 +63,7 @@ function getTemplateData(id: string) {
   return {
     name,
     title,
-    svgPathData: icons[id],
+    svgPathData: <string>icons[id],
   };
 }
 
