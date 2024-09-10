@@ -1,0 +1,23 @@
+{
+  "name": "vue-material-design-icons",
+  "version": "3.2.0",
+  "author": "Rob Cresswell <robcresswell@pm.me>",
+  "license": "MIT",
+  "description": "A collection of material design icons as Vue single file components",
+  "repository": "github:robcresswell/vue-material-design-icons",
+  "keywords": [
+    "vue",
+    "material design icons",
+    "mdi",
+    "icons",
+    "material",
+    "icon",
+    "svg",
+    "vue.js",
+    "material design"
+  ],
+  "homepage": "https://github.com/robcresswell/vue-material-design-icons",
+  "bugs": {
+    "url": "https://github.com/robcresswell/vue-material-design-icons/issues"
+  }
+}
