@@ -1,5 +1,7 @@
 import * as mdiIcons from '@mdi/js/commonjs/mdi.js';
+import { fab } from '@fortawesome/free-brands-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
 import { findIconDefinition, library, IconLookup } from '@fortawesome/fontawesome-svg-core';
 import mapping from './mapping';
 
@@ -13,7 +15,7 @@ export enum MappingStatus {
   UNKNOWN_MAPPING = 'unknown_mapping',
 }
 
-library.add(fas);
+library.add(fas, fab, far);
 
 // MDI viewBox is always 24x24
 const mdiViewBox = {
