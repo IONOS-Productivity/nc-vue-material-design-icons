@@ -4,6 +4,7 @@ import { fas } from '@fortawesome/pro-solid-svg-icons';
 import { far } from '@fortawesome/pro-regular-svg-icons';
 import { fasr } from '@fortawesome/sharp-regular-svg-icons';
 import { fass } from '@fortawesome/sharp-solid-svg-icons';
+import type { IconLookup } from '@fortawesome/fontawesome-common-types';
 import { findIconDefinition, library } from '@fortawesome/fontawesome-svg-core';
 import mapping from './mapping';
 
@@ -28,12 +29,15 @@ const mdiViewBox = {
 const remap = reMapIcons();
 
 /**
- * Get the icon lookup from the icon string
- * @param icon
+ * Get the icon lookup object from the icon string
+ * @param icon name as dash-case string
  * @returns IconLookup
  */
 function getIconName(icon: string): IconLookup {
   const prefix = icon.split('-', 1)[0];
+  if (!prefix) {
+    throw new Error(`Icon "${icon}" not found. Expected format: <prefix>-<name>`);
+  }
   const iconName = icon.slice(prefix.length + 1);
 
   return {
@@ -58,28 +62,28 @@ function reMapIcons() {
     result.viewBoxes[icon] = mdiViewBox;
     result.stats[icon] = MappingStatus.ORIGINAL;
     if (!mapping.icons.hasOwnProperty(icon)) {
+      // No mapping configured
       continue;
     }
 
     const newIconName = mapping.icons[icon];
-    if (!newIconName) {
-      console.error('mapped icon not set. fallback to source icon', icon);
+    if (newIconName === "") {
+      console.error(`Icon mapping is empty. Fallback to source icon "${icon}"`);
       result.stats[icon] = MappingStatus.EMPTY_MAPPING;
       continue;
     }
-    console.log('re-mapping', icon, 'to', newIconName);
 
     const iconDefinition = findIconDefinition(getIconName(newIconName));
 
     if (!iconDefinition) {
       console.error(
-        'mapped icon not found. fallback to source icon',
-        icon,
-        newIconName,
+        `Mapped icon "${newIconName}" for "${icon}" not found. fallback to source icon`,
       );
       result.stats[icon] = MappingStatus.UNKNOWN_MAPPING;
       continue;
     }
+
+    console.log(`Re-mapping "${icon}" to "${newIconName}"`);
 
     result.icons[icon] = iconDefinition.icon[4];
     result.viewBoxes[icon] = {
