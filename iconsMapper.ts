@@ -5,6 +5,8 @@ import { far } from '@fortawesome/pro-regular-svg-icons';
 import { fasr } from '@fortawesome/sharp-regular-svg-icons';
 import { fass } from '@fortawesome/sharp-solid-svg-icons';
 import { findIconDefinition, type IconLookup, library } from '@fortawesome/fontawesome-svg-core';
+import { pathParse, serializePath } from 'svg-path-parse';
+
 import type {
   IconPrefix,
   IconName,
@@ -109,12 +111,28 @@ function reMapIcons(): MappingResult {
     }
 
     console.log(`Re-mapping "${icon}" to "${mappedIconID}"`);
+    const originalPath = iconDefinition.icon[4];
 
-    result.icons[icon] = iconDefinition.icon[4];
-    result.viewBoxes[icon] = {
-      width: iconDefinition.icon[0],
-      height: iconDefinition.icon[1],
-    };
+    // Calculate scale factor
+    const originalWidth = iconDefinition.icon[0];
+    const originalHeight = iconDefinition.icon[1];
+    const targetWidth = mdiViewBox.width;
+    const targetHeight = mdiViewBox.height;
+
+    const scaleX = targetWidth / originalWidth;
+    const scaleY = targetHeight / originalHeight;
+
+    const scale = Math.min(scaleX, scaleY);
+
+    // Calculate translations
+    const translateX = (targetWidth - originalWidth * scale) / 2;
+    const translateY = (targetHeight - originalHeight * scale) / 2;
+
+    console.log(`Scale ${originalWidth} x ${originalHeight} SVG  by  ${scale}`);
+
+   const pathDatas = pathParse(originalPath).normalize({ round: 2, transform: `translate(${translateX}, ${translateY}) scale(${scale})` })
+
+    result.icons[icon] = serializePath(pathDatas);
     result.stats[icon] = MappingStatus.REMAPPED;
   }
 
