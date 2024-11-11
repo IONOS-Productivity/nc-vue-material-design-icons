@@ -19,12 +19,6 @@
   "devDependencies": {
     "@babel/core": "^7.20.12",
     "@babel/preset-env": "^7.20.2",
-    "@fortawesome/fontawesome-svg-core": "^6.6.0",
-    "@fortawesome/free-brands-svg-icons": "^6.6.0",
-    "@fortawesome/pro-regular-svg-icons": "^6.6.0",
-    "@fortawesome/pro-solid-svg-icons": "^6.6.0",
-    "@fortawesome/sharp-regular-svg-icons": "^6.6.0",
-    "@fortawesome/sharp-solid-svg-icons": "^6.6.0",
     "@mdi/js": "file:../nc-mdi-js",
     "@types/node": "^18.11.18",
     "@vue/test-utils": "1.2.2",
