@@ -19,7 +19,7 @@ function renderTemplate(title: string, svgPathData: string, name: string) {
         role="img"
         @click="$emit('click', $event)">
     <svg :fill="fillColor"
-         class="material-design-icon__svg fa-icon__svg"
+         class="material-design-icon__svg"
          :width="size"
          :height="size"
          viewBox="0 0 24 24">
