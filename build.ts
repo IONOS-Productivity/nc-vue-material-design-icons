@@ -9,7 +9,6 @@ import { existsSync } from 'fs';
 
 const dist = path.resolve(__dirname, 'dist');
 
-// "fa-icon__svg" class to find not matched MD later
 function renderTemplate(title: string, svgPathData: string, name: string) {
   return `<template>
   <span v-bind="$attrs"
@@ -19,7 +18,7 @@ function renderTemplate(title: string, svgPathData: string, name: string) {
         role="img"
         @click="$emit('click', $event)">
     <svg :fill="fillColor"
-         class="material-design-icon__svg fa-icon__svg"
+         class="material-design-icon__svg"
          :width="size"
          :height="size"
          viewBox="0 0 24 24">
