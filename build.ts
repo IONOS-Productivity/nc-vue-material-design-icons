@@ -9,7 +9,7 @@ import { existsSync } from 'fs';
 
 const dist = path.resolve(__dirname, 'dist');
 
-function renderTemplate(title: string, svgPathData: string, name: string) {
+function renderTemplate(title: string, svgPathData: string, name: string, id: string) {
   return `<template>
   <span v-bind="$attrs"
         :aria-hidden="title ? null : true"
@@ -18,7 +18,7 @@ function renderTemplate(title: string, svgPathData: string, name: string) {
         role="img"
         @click="$emit('click', $event)">
     <svg :fill="fillColor"
-         class="material-design-icon__svg"
+         class="material-design-icon__svg mdi-id__${id}"
          :width="size"
          :height="size"
          viewBox="0 0 24 24">
@@ -60,6 +60,7 @@ function getTemplateData(id: string) {
   const title = splitID.join('-').toLowerCase();
 
   return {
+    id,
     name,
     title,
     svgPathData: icons[id],
@@ -78,8 +79,8 @@ async function build() {
   // Batch process promises to avoid overloading memory
   await pMap(
     templateData,
-    async ({ name, title, svgPathData }) => {
-      const component = renderTemplate(title, svgPathData, name);
+    async ({ id, name, title, svgPathData }) => {
+      const component = renderTemplate(title, svgPathData, name, id);
       const filename = `${name}.vue`;
 
       return writeFile(path.resolve(dist, filename), component);
